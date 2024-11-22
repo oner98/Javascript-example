@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Shopping Site</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      background-color: #0078d7;
+      color: white;
+      text-align: center;
+      padding: 1rem 0;
+    }
+
+    .container {
+      width: 80%;
+      margin: 20px auto;
+    }
+
+    .user-info, .products {
+      margin: 20px 0;
+    }
+
+    .user-info form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .user-info input {
+      padding: 10px;
+      font-size: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .user-info button {
+      padding: 10px;
+      background-color: #0078d7;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .user-info button:hover {
+      background-color: #005bb5;
+    }
+
+    .product {
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      margin: 10px;
+      padding: 15px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .product img {
+      max-width: 300px;
+      border-radius: 5px;
+    }
+
+    .product h3 {
+      margin: 15px 0 10px;
+      font-size: 1.5rem;
+    }
+
+    .product p {
+      font-size: 1rem;
+      color: #555;
+    }
+
+    .product .price {
+      font-size: 1.2rem;
+      color: #e63946; /* Red color for pricing */
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .product button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #0078d7;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .product button:hover {
+      background-color: #005bb5;
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px;
+      background-color: #0078d7;
+      color: white;
+      position: relative;
+      bottom: 0;
+      width: 100%;
+    }
+
+    #cartDetails {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    #cartDetails ul {
+      padding-left: 20px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Shopping Site</h1>
+  </header>
+
+  <div class="container">
+    <div class="user-info">
+      <h2>User Information</h2>
+      <form id="userForm">
+        <input type="text" id="name" placeholder="Enter your name" required>
+        <input type="email" id="email" placeholder="Enter your email" required>
+        <button type="submit">Save Information</button>
+      </form>
+      <p id="userDetails"></p>
+    </div>
+
+    <div class="products">
+      <h2>Products</h2>
+
+      <!-- Ferrari Product Card -->
+      <div class="product">
+        <img src="https://images.unsplash.com/photo-1561948950-5a3dca8281d7" alt="Ferrari sports car in a bold red color, showcasing luxury and speed.">
+        <h3>Ferrari</h3>
+        <p>Indulge in the power and elegance of Ferrari, a car that offers thrilling performance and ultimate luxury.</p>
+        <p class="price">$250,000</p>
+        <button>Add to Cart</button>
+      </div>
+
+      <!-- Lamborghini Product Card -->
+      <div class="product">
+        <img src="https://images.unsplash.com/photo-1602440621407-50a22f06ea7c" alt="A stunning Lamborghini Aventador in yellow, displaying unmatched design and power.">
+        <h3>Lamborghini</h3>
+        <p>Drive the future with Lamborghini, where cutting-edge design meets exhilarating speed and precision.</p>
+        <p class="price">$400,000</p>
+        <button>Add to Cart</button>
+      </div>
+
+      <!-- Bugatti Product Card -->
+      <div class="product">
+        <img src="https://images.unsplash.com/photo-1605587631777-49968f4705d0" alt="Bugatti Chiron, a symbol of engineering excellence and unmatched speed, designed for thrill-seekers.">
+        <h3>Bugatti</h3>
+        <p>Push the limits of speed and luxury with Bugatti, a car that combines elegant design with incredible performance.</p>
+        <p class="price">$3,000,000</p>
+        <button>Add to Cart</button>
+      </div>
+
+    </div>
+
+    <div id="cartDetails"></div>
+  </div>
+
+  <footer>
+    <p>&copy; 2024 Simple Shopping Site</p>
+  </footer>
+
+  <script>
+    // Save User Information
+    const userForm = document.getElementById('userForm');
+    const userDetails = document.getElementById('userDetails');
+
+    userForm.addEventListener('submit', function (e) {
+      e.preventDefault(); // Prevent page reload
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+
+      userDetails.innerHTML = `<strong>Welcome, ${name}!</strong> Your email: ${email}`;
+      userForm.reset(); // Clear the form
+    });
+
+    // Shopping Cart Functionality
+    const cart = []; // Array to store cart items
+    const cartDetails = document.getElementById('cartDetails'); // Div for cart details
+
+    function updateCartDetails() {
+      if (cart.length === 0) {
+        cartDetails.innerHTML = "<h3>Your cart is empty</h3>";
+      } else {
+        cartDetails.innerHTML = `
+          <h3>Your Cart:</h3>
+          <ul>
+            ${cart.map((item) => `<li>${item}</li>`).join('')}
+          </ul>
+          <p><strong>Total Items:</strong> ${cart.length}</p>
+        `;
+      }
+    }
+
+    // Add event listeners to "Add to Cart" buttons
+    const productButtons = document.querySelectorAll('.product button');
+
+    productButtons.forEach((button) => {
+      button.addEventListener('click', function () {
+        const productName = button.parentElement.querySelector('h3').innerText; // Get product name
+        cart.push(productName); // Add product to cart
+        alert(`${productName} added to the cart!`);
+        updateCartDetails(); // Update the cart
+      });
+    });
+
+    // Initialize the cart details
+    updateCartDetails();
+  </script>
+</body>
+</html>
