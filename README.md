@@ -1,3 +1,3 @@
 ﻿# Javascript-example
-// dahada geliştirelecek
+// dahada geliştirelecek <br>
 // derste kişisel bilgiler ve database eklendi
